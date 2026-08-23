@@ -1,6 +1,7 @@
 const STORAGE_KEYS = {
   TASKS: "todo_tasks",
   LISTS: "todo_lists",
+  TAGS: "todo_tags",
 };
 
 function getTasks() {
@@ -101,4 +102,38 @@ function addTag(name) {
     saveTags(tags);
   }
   return tags;
+}
+
+function formatDate(date) {
+  const d = String(date.getDate()).padStart(2, "0");
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const y = String(date.getFullYear()).slice(-2);
+  return `${d}-${m}-${y}`;
+}
+
+function getTodayTasks() {
+  const todayStr = new Date().toISOString().slice(0, 10);
+  return getTasks().filter((t) => t.dueDate === todayStr);
+}
+
+function getUpcomingTasks() {
+  const todayStr = new Date().toISOString().slice(0, 10);
+  return getTasks().filter((t) => t.dueDate && t.dueDate > todayStr);
+}
+
+function getTasksByList(listName) {
+  return getTasks().filter((t) => t.list === listName);
+}
+
+function countActiveByList(listName) {
+  return getTasks().filter((t) => t.list === listName && !t.completed).length;
+}
+
+function countUpcoming() {
+  return getUpcomingTasks().filter((t) => !t.completed).length;
+}
+
+function searchTasks(keyword) {
+  const kw = keyword.toLowerCase();
+  return getTasks().filter((t) => t.title.toLowerCase().includes(kw));
 }
