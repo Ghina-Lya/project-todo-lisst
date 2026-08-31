@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>Menu</h1>
+      <button class="icon-btn" id="menuToggle" aria-label="Toggle menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M3 6H21" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          <path d="M3 12H21" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          <path d="M3 18H21" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <circle cx="11" cy="11" r="7" stroke="#9AA0A6" stroke-width="2"/>
+        <path d="M21 21L16.65 16.65" stroke="#9AA0A6" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input type="text" placeholder="Search" id="searchInput">
+    </div>
+
+    <div class="section">
+      <p class="section-label">Tasks</p>
+      <button class="nav-item" data-view="upcoming" id="navUpcoming">
+        <span class="nav-left">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 6L15 12L9 18" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 6L20 12L14 18" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Upcoming</span>
+        </span>
+        <span class="count-badge" id="upcomingCount">0</span>
+      </button>
+
+      <button class="nav-item active" data-view="today" id="navToday">
+        <span class="nav-left">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <line x1="4" y1="6" x2="20" y2="6" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+            <line x1="4" y1="12" x2="20" y2="12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+            <line x1="4" y1="18" x2="14" y2="18" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>Today</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Lists</p>
+      <div id="listsContainer"></div>
+      <button class="nav-item add-list" id="addListBtn">
+        <span class="nav-left">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5V19" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+            <path d="M5 12H19" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>Add New List</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="nav-item">
+        <span class="nav-left">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <line x1="4" y1="6" x2="20" y2="6" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+            <line x1="4" y1="12" x2="20" y2="12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+            <line x1="4" y1="18" x2="20" y2="18" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>Settings</span>
+        </span>
+      </button>
+      <button class="nav-item">
+        <span class="nav-left">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 21H5C4.44772 21 4 20.5523 4 20V4C4 3.44772 4.44772 3 5 3H9" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 17L21 12L16 7" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 12H9" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Sign Out</span>
+        </span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN PANEL -->
+  <main class="main-panel">
+    <div class="main-header">
+      <h2 id="viewTitle">Today</h2>
+      <span class="view-count" id="viewCount"></span>
+    </div>
+
+    <div class="add-task-row" id="addTaskRow">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M12 5V19" stroke="#9AA0A6" stroke-width="2" stroke-linecap="round"/>
+        <path d="M5 12H19" stroke="#9AA0A6" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>Add New Task</span>
+    </div>
+
+    <div class="task-list" id="taskList"></div>
+
+    <button class="add-tasks-btn" id="addTasksBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M12 5V19" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+        <path d="M5 12H19" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>Add Tasks</span>
+    </button>
+  </main>
+
+  <!-- TASK EDIT PANEL -->
+  <aside class="task-panel" id="taskPanel">
+    <div class="task-panel-header">
+      <h2>Tasks:</h2>
+    </div>
+
+    <input type="text" class="field-title" id="fieldTitle" placeholder="Title">
+
+    <textarea class="field-desc" id="fieldDesc" placeholder="Description"></textarea>
+
+    <div class="field-row">
+      <label for="fieldList">List</label>
+      <div class="select-wrap">
+        <select id="fieldList"></select>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="chev">
+          <path d="M6 9L12 15L18 9" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <label for="fieldDate">Due date</label>
+      <div class="select-wrap">
+        <input type="date" id="fieldDate">
+      </div>
+    </div>
+
+    <div class="field-row tags-row">
+      <label>Tags</label>
+      <div class="tags-wrap" id="tagsWrap">
+        <button class="add-tag-btn" id="addTagBtn">+ Add Tags</button>
+      </div>
+    </div>
+
+    <div class="task-panel-footer">
+      <button class="btn-delete" id="deleteTaskBtn">Delete Task</button>
+      <button class="btn-save" id="saveTaskBtn">Save Changes</button>
+    </div>
+  </aside>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
